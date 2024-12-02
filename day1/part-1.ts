@@ -1,25 +1,19 @@
 import { splitValues } from '../lib/lib.js';
-import { countValues, getFirstValue } from './lib.js';
+import { countValues, getDiff } from './lib.js';
 
 export const main = (input: string) => {
-  const maps = countValues(splitValues(input, '\n'));
+  let [list1, list2] = countValues(splitValues(input, '\n'));
 
   let total = 0;
-  let diff = 0;
   do {
-    const [newList1, val1] = getFirstValue(maps[0]);
-    const [newList2, val2] = getFirstValue(maps[1]);
+    const [newList1, newList2, diff] = getDiff(list1, list2);
+    list1 = newList1;
+    list2 = newList2;
 
-    maps[0] = newList1;
-    maps[1] = newList2;
-
-    diff = Math.abs(val1 - val2);
-    console.log(diff);
-    
     //valeure absolue
     total += diff;
 
-  } while (diff > 0);
+  } while (list1.size > 0 || list2.size > 0);
 
   return total;
 };

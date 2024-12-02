@@ -1,34 +1,35 @@
-import { valueToInt } from "../lib/lib";
+import { splitValues, valueToInt } from "../lib/lib";
 
-export function getDistances(left: number[], right: number[]) {
-  if (left.length !== right.length) {
-    throw new Error("The arrays must have the same length");
+
+export const countValues = (lines: string[]): [Map<number,number>, Map<number,number>] => {;
+    const list1 = new Map<number, number>();
+    const list2 = new Map<number, number>();
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const [first, second] = splitValues(line,'   ').map(valueToInt);
+
+    const firstValue = list1.get(first) ?? 0;
+    list1.set(first, firstValue + 1);
+
+    const secondValue = list2.get(second) ?? 0;
+    list2.set(second, secondValue + 1);
   }
 
-  const leftSorted = left.toSorted();
-  const rightSorted = right.toSorted();
 
-  return leftSorted.map((value, index) => Math.abs(value - rightSorted[index]));
+  return [list1, list2];
+
 }
 
-export function getDistancesWithSimilarity(left: number[], right: number[]) {
-  const rightFigureCount = new Map<number, number>();
-  right.forEach((value) => {
-    rightFigureCount.set(value, (rightFigureCount.get(value) ?? 0) + 1);
-  });
+export const getFirstValue = (list: Map<number, number>): [Map<number, number>, number] => {
+    const [key, value] = list.entries().next().value ?? [0, 0];
 
-  return left.map((value) =>
-    Math.abs(value * (rightFigureCount.get(value) ?? 0)),
-  );
-}
+    //decrease entry
+    const newValue = value - 1;
+    const newList = list.set(key, newValue);
+    if (newValue === 0) {
+        list.delete(key);
+    }
 
-export type NumberLeftRight = { left: number[]; right: number[] };
-export function reduceLeftRight(
-  acc: NumberLeftRight,
-  stringTuple: string[],
-): NumberLeftRight {
-  acc.left.push(valueToInt(stringTuple[0]));
-  acc.right.push(valueToInt(stringTuple[1]));
-
-  return acc;
-}
+    return [ newList, key ];
+};

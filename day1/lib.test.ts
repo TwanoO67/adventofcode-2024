@@ -1,28 +1,71 @@
 import { describe, expect, it } from "vitest";
-import { getDistances, getDistancesWithSimilarity } from "./lib";
+import { countValues, getFirstValue } from "./lib";
+import { splitValues } from "../lib/lib";
 
-describe("Given the getDistances function", () => {
-  describe("When the smallest distance", () => {
-    it("Then the value should be 1", () => {
-      const exampleLeft = [3, 4, 2, 1, 3, 3];
-      const exampleRight = [4, 3, 5, 3, 9, 3];
+const example = 
+`3   4
+4   3
+2   5
+1   3
+3   9
+3   3`;
+const lines = splitValues(example, '\n');
 
-      expect(getDistances(exampleLeft, exampleRight)).toEqual([
-        2, 1, 0, 1, 2, 5,
+describe("Given the input", () => {
+  describe("When we call the getInput function", () => {
+    it("Then we expect an array of string", () => {
+
+      const [_1, _2] = countValues(lines);
+
+      const expected1 = new Map([
+        [1, 1],
+        [2, 1],
+        [3, 3],
+        [4, 1],
       ]);
+
+      expect(_1).toStrictEqual(expected1);
+
+      const expected2 = new Map([
+        [3, 3],
+        [4, 1],
+        [5, 1],
+        [9, 1],
+      ]);
+      expect(_2).toStrictEqual(expected2);
+
     });
   });
 });
 
-describe("Given the getNumberWithSimilarity function", () => {
-  describe("When the smallest distance", () => {
-    it("Then the value should be 1", () => {
-      const exampleLeft = [3, 4, 2, 1, 3, 3];
-      const exampleRight = [4, 3, 5, 3, 9, 3];
+describe("Given the input", () => {
+  describe("When we call the getFirstValue function", () => {
+    it("Then we expect a newt list and the current value", () => {
 
-      expect(getDistancesWithSimilarity(exampleLeft, exampleRight)).toEqual([
-        9, 4, 0, 0, 9, 9,
+      const map = new Map([
+        [3, 2],
+        [4, 1],
       ]);
+      const returned = getFirstValue(map);
+
+      expect(returned[0]).toStrictEqual(new Map([
+        [3, 1],
+        [4, 1],
+      ]));
+      expect(returned[1]).toStrictEqual(3);
+
+      const returned2 = getFirstValue(map);
+
+      expect(returned2[0]).toStrictEqual(new Map([
+        [4, 1],
+      ]));
+      expect(returned2[1]).toStrictEqual(3);
+
+      const returned3 = getFirstValue(map);
+      expect(returned3[0]).toStrictEqual(new Map([
+      ]));
+      expect(returned3[1]).toStrictEqual(4);
+
     });
   });
 });

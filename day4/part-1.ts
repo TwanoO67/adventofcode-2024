@@ -1,5 +1,5 @@
-import * as lib from './lib.ts';
+import { countXMAS } from './lib';
 
 export const main = async (input: string) => {
-  return input;
+  return countXMAS(input);
 };

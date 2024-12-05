@@ -1,5 +1,5 @@
-import * as lib from './lib.ts';
+import { countCrossMAS } from "./lib";
 
 export const main = async (input: string) => {
-  return input;
+  return countCrossMAS(input);
 };

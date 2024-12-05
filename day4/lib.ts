@@ -53,3 +53,43 @@ export const countXMAS = (input: string) => {
 
     return count;
 }
+
+export const countCrossMAS = (input: string) => {
+
+
+    const lines = input.split('\n');
+    let count = 0;
+
+    const testCharAt = (i: number, j: number, expected: string) => {
+        return lines?.[i]?.[j] === expected;
+    }
+
+    const detectXMAS = (i: number, j: number) => {
+        let count = 0;
+        //check if the word is a cross of MAS
+        if(
+            testCharAt(i-1,j-1,'M') && testCharAt(i+1,j+1,'S') ||
+            testCharAt(i-1,j-1,'S') && testCharAt(i+1,j+1,'M')
+        ) {
+            if(
+                testCharAt(i-1,j+1,'M') && testCharAt(i+1,j-1,'S') ||
+                testCharAt(i-1,j+1,'S') && testCharAt(i+1,j-1,'M')
+            ) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    for(var i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        for(var j = 0; j < line.length; j++) {
+            if(line[j] === 'A'){
+                count += detectXMAS(i,j);
+            }
+        }
+    }
+
+    return count;
+}
+

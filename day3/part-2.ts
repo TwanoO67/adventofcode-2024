@@ -14,7 +14,7 @@ export const main = async (input: string) => {
       doMode = false;
     }
     else {
-      const [, a, b] = match.match(/mul\((\d{1,3}),(\d{1,3})\)/);
+      const [, a, b] = match.match(/mul\((\d{1,3}),(\d{1,3})\)/) ?? [0,0,0];
       if(doMode) {
         total += a * b;
       }

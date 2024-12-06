@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { getLineOfAgent, nextPosition, replaceAgentInCurrentLine } from "./lib";
+import { countPossiblePositionsForBlock, getFixedGrid, getLineOfAgent } from "./lib";
 
-describe("Given", () => {
-  describe("When", () => {
+describe("Given day6", () => {
+  describe("When part1", () => {
     it("Then", () => {
       const input = `....#.....
 .........#
@@ -21,24 +21,7 @@ describe("Given", () => {
 
       expect(currentLineIndex).toBe(6);
 
-      let iteration = 0;
-      let maxIteration = 100;
-      do {
-        try {
-          const currentLineIndex = getLineOfAgent(lines);
-          const nextLines = nextPosition([lines[currentLineIndex-1], lines[currentLineIndex], lines[currentLineIndex+1]]);
-          lines[currentLineIndex-1] = nextLines[0];
-          lines[currentLineIndex] = nextLines[1];
-          lines[currentLineIndex+1] = nextLines[2];
-          iteration++
-        }
-        catch {
-          //he got out, so stop
-          iteration = maxIteration;
-        }
-        
-      }
-      while(iteration < maxIteration)
+      lines = getFixedGrid(lines);
 
       let total = 0;
       for(var i = 0; i < lines.length; i++) {
@@ -47,6 +30,32 @@ describe("Given", () => {
       }
 
       expect(total).toBe(41);
+
+    });
+  });
+});
+
+
+describe("Given day6", () => {
+  describe("When part2", () => {
+    it("Then", () => {
+      const input = `....#.....
+.........#
+..........
+..#.......
+.......#..
+..........
+.#..^.....
+........#.
+#.........
+......#...`;
+
+
+      let initialLines = input.split('\n');
+      
+      const total = countPossiblePositionsForBlock(initialLines);
+
+      expect(total).toBe(6);
 
     });
   });

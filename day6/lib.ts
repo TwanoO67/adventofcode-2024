@@ -119,3 +119,75 @@ export const nextPosition = ([upper,current,lower]: [string, string, string]): [
             ];
     }
 }
+
+
+export const getFixedGrid = (lines: string[]) => {
+  let iteration = 0;
+  let maxIteration = 131 * 131; //number of cells max of the grid
+
+  do {
+    try {
+      const currentLineIndex = getLineOfAgent(lines);
+      const nextLines = nextPosition([lines[currentLineIndex-1], lines[currentLineIndex], lines[currentLineIndex+1]]);
+      lines[currentLineIndex-1] = nextLines[0];
+      lines[currentLineIndex] = nextLines[1];
+      lines[currentLineIndex+1] = nextLines[2];
+      iteration++
+    }
+    catch {
+      console.log('he got out');
+      iteration = maxIteration;
+    }
+    
+  }
+  while(iteration < maxIteration)
+
+return lines;
+}
+
+
+export const countPossiblePositionsForBlock = (initialLines: string[]) => {
+    let initialLineOfAgent = 0;
+    let initialIndexOfAgent = 0;
+    for(var i = 0; i < initialLines.length; i++) {
+    const current = initialLines[i];
+    const agentType = current.match(/[><^v]/gi)?.[0] ?? 'a';
+    if(agentType !== 'a'){
+        initialLineOfAgent = i;
+        initialIndexOfAgent = current.indexOf(agentType);
+        break;
+    }
+    }
+
+    let total = 0;
+    for(var i = 0; i < initialLines.length; i++) {
+        const line = initialLines[i];
+        for(var j=0; j < line.length; j++){
+            //exclude the intial position of the agent
+            if(i===initialLineOfAgent && j === initialIndexOfAgent) {
+            continue;
+            }
+
+            const newTest = [ ...initialLines];
+            let newLine = [ ...line ];
+            newLine[j] = '#';
+            newTest[i] = newLine.join('');
+
+            //resolve the agent movements
+            const fixedLines = getFixedGrid(newTest);
+            try {
+                //is the agent still in the grid?
+                getLineOfAgent(fixedLines);
+                total++;
+                console.log('found a position');
+            }
+            catch {
+                //if not, we don't count anything
+            }
+
+        }
+    }
+    return total;
+
+}
+    

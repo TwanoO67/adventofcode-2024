@@ -100,20 +100,16 @@ describe("Given", () => {
       const incorrectOrders = orders.filter(order => !orderIsCorrect(order, rules));
       expect(incorrectOrders?.length).toBe(3);
 
-
-
       const tab1 = [ 5 , 8 , 4 , 7 , 9 , 6 , 1 , 3 , 2 , 10];
       const tabResult = switchPosition(tab1, [9, 10]);
       expect(tabResult).toEqual([5, 8, 4, 7, 10, 6, 1, 3, 2, 9]);
-      
-
+    
       const correctOrders = incorrectOrders.map(order => correct(order, rules));
 
       const middles = correctOrders?.map(order => findMiddleNumber(order));
       expect(middles?.length).toBe(3);
       expect(middles?.[0]).toBe(47);
       expect(middles?.[1]).toBe(29);
-      console.log(correctOrders[2], orderIsCorrect(correctOrders[2], rules) )
       expect(middles?.[2]).toBe(47);
 
       const result = middles.reduce((sum, current) => sum + current, 0);

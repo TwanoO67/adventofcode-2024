@@ -16,7 +16,6 @@ export const main = async (input: string) => {
       iteration++
     }
     catch {
-      console.log('he got out');
       iteration = maxIteration;
     }
     

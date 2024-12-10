@@ -4,7 +4,6 @@ export const getLineOfAgent = (lines: string[]): number => {
             return i;
         }
     }
-    console.log('agent not found');
     throw new Error('he got out!');
 }
 
@@ -135,7 +134,6 @@ export const getFixedGrid = (lines: string[]) => {
       iteration++
     }
     catch {
-      console.log('he got out');
       iteration = maxIteration;
     }
     
@@ -179,7 +177,6 @@ export const countPossiblePositionsForBlock = (initialLines: string[]) => {
                 //is the agent still in the grid?
                 getLineOfAgent(fixedLines);
                 total++;
-                console.log('found a position');
             }
             catch {
                 //if not, we don't count anything
